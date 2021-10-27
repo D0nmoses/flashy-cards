@@ -53,3 +53,43 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
+
+class Card(models.Model):
+
+    title = models.CharField(max_length=20)
+    notes = models.TextField(max_length= 100)
+    dateAdded = models.DateTimeField(auto_now_add=True)
+    profile = models.ForeignKey(Profile,on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+
+        ordering = ['-post_date']
+
+    def save_card(self):
+
+        self.save()
+
+    @classmethod
+    def get_cards(cls):
+
+        cards = Card.objects.all()
+
+        return cards
+
+    @classmethod
+    def get_profile_cards(cls, profile_id):
+
+        profile_cards = Card.objects.filter(profile=profile_id).all()
+
+        return profile_cards
+
+class Subject(models.Model):
+
+    name = models.CharField(max_length=10)
+
+    def __str__(self):
+        return self.name
