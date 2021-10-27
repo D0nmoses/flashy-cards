@@ -54,6 +54,13 @@ def create_user_profile(sender, instance, created, **kwargs):
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 
+class Subject(models.Model):
+
+    name = models.CharField(max_length=10)
+
+    def __str__(self):
+        return self.name
+
 class Card(models.Model):
 
     title = models.CharField(max_length=20)
@@ -67,7 +74,7 @@ class Card(models.Model):
 
     class Meta:
 
-        ordering = ['-post_date']
+        ordering = ['-dateAdded']
 
     def save_card(self):
 
@@ -87,9 +94,3 @@ class Card(models.Model):
 
         return profile_cards
 
-class Subject(models.Model):
-
-    name = models.CharField(max_length=10)
-
-    def __str__(self):
-        return self.name
